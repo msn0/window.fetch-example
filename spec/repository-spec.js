@@ -8,8 +8,14 @@ var sinon = require('sinon');
 
 describe("Repository", function () {
 
+  var response;
+
   beforeEach(function () {
     sinon.stub(window, 'fetch');
+    response = Promise.resolve(new Response('{"foo":"bar"}', {
+      status: 200,
+      headers: {'Content-type': 'application/json'}
+    }));
   });
 
   afterEach(function () {
@@ -17,10 +23,7 @@ describe("Repository", function () {
   });
 
   it("get should request expected url", function (done) {
-    fetch.returns(Promise.resolve(new Response('{"foo":"bar"}', {
-      status: 200,
-      headers: {'Content-type': 'application/json'}
-    })));
+    fetch.returns(response);
 
     repository.get().then(function (data) {
       expect(fetch.firstCall.args[0]).toEqual('users.json');
@@ -29,11 +32,8 @@ describe("Repository", function () {
     });
   });
 
-  it("create should POST expected url with expected", function (done) {
-    fetch.returns(Promise.resolve(new Response('{"foo":"bar"}', {
-      status: 200,
-      headers: {'Content-type': 'application/json'}
-    })));
+  it("create should POST expected url with expected body", function (done) {
+    fetch.returns(response);
 
     repository.create({"test": 1}).then(function (data) {
       expect(fetch.firstCall.args[0]).toEqual('users.json');
