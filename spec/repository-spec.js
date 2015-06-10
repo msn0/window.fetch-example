@@ -4,7 +4,7 @@ require('whatwg-fetch');
 require('es6-promise');
 
 var users = require('../src/repository');
-var fakeFetch = require('./fake-fetch');
+var fakeFetch = require('fake-fetch');
 
 describe("User repository", function () {
 
