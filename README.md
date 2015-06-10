@@ -1,5 +1,7 @@
 # window.fetch example
 
+> this examples shows basic usage of window.fetch API and [https://github.com/msn0/fake-fetch](https://github.com/msn0/window.fetch) as its mock.
+
 ## GET
 
 ```js
