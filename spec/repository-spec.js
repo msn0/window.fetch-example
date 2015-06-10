@@ -3,42 +3,37 @@
 require('whatwg-fetch');
 require('es6-promise');
 
-var repository = require('../src/repository');
-var sinon = require('sinon');
+var users = require('../src/repository');
+var fakeFetch = require('./fake-fetch');
 
-describe("Repository", function () {
-
-  var response;
+describe("User repository", function () {
 
   beforeEach(function () {
-    sinon.stub(window, 'fetch');
-    response = Promise.resolve(new Response('{"foo":"bar"}', {
-      status: 200,
-      headers: {'Content-type': 'application/json'}
-    }));
+    fakeFetch.install();
   });
 
   afterEach(function () {
-    fetch.restore();
+    fakeFetch.restore();
   });
 
-  it("get should request expected url", function (done) {
-    fetch.returns(response);
+  it("get should request for users with expected data", function (done) {
+    fakeFetch.respondWith({"foo": "bar"});
 
-    repository.get().then(function (data) {
-      expect(fetch.firstCall.args[0]).toEqual('users.json');
+    users.get().then(function (data) {
+      expect(fakeFetch.getUrl()).toEqual('users.json');
+      expect(fakeFetch.getMethod()).toEqual('get');
       expect(data).toEqual({"foo": "bar"});
       done();
     });
   });
 
-  it("create should POST expected url with expected body", function (done) {
-    fetch.returns(response);
+  it("create should send POST request with expected data", function (done) {
+    fakeFetch.respondWith({"foo": "bar"});
 
-    repository.create({"test": 1}).then(function (data) {
-      expect(fetch.firstCall.args[0]).toEqual('users.json');
-      expect(fetch.firstCall.args[1].method).toEqual('post');
-      expect(fetch.firstCall.args[1].body).toEqual('{"test":1}');
+    users.create({"test": 1}).then(function (data) {
+      expect(fakeFetch.getUrl()).toEqual('users.json');
+      expect(fakeFetch.getMethod()).toEqual('post');
+      expect(fakeFetch.getBody()).toEqual('{"test":1}');
       expect(data).toEqual({"foo": "bar"});
       done();
     });
