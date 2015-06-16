@@ -40,7 +40,7 @@ function createUser() {
 it("create should send POST request with expected data", function (done) {
   fakeFetch.respondWith({"foo": "bar"});
 
-  users.create({"test": 1}).then(function (data) {
+  createUser({"test": 1}).then(function (data) {
     expect(fakeFetch.getUrl()).toEqual('/users');
     expect(fakeFetch.getMethod()).toEqual('post');
     expect(fakeFetch.getBody()).toEqual('{"test":1}');
