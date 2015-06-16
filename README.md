@@ -6,15 +6,15 @@
 
 ```js
 function getUsers() {
-  return fetch('/users').then(function (response) {
+  return fetch('/users').then(response => {
     return response.json();
   });
 }
 
-it("get should request for users with expected data", function (done) {
+it("get should request for users with expected data", done => {
   fakeFetch.respondWith({"foo": "bar"});
 
-  getUsers().then(function (data) {
+  getUsers().then(data => {
     expect(fakeFetch.getUrl()).toEqual('/users');
     expect(fakeFetch.getMethod()).toEqual('get');
     expect(data).toEqual({"foo": "bar"});
@@ -32,15 +32,15 @@ function createUser() {
   return fetch('/users', {
     method: 'post',
     body: JSON.stringify(data)
-  }).then(function (response) {
+  }).then(response => {
     return response.json();
   });
 }
 
-it("create should send POST request with expected data", function (done) {
+it("create should send POST request with expected data", done => {
   fakeFetch.respondWith({"foo": "bar"});
 
-  createUser({"test": 1}).then(function (data) {
+  createUser({"test": 1}).then(data => {
     expect(fakeFetch.getUrl()).toEqual('/users');
     expect(fakeFetch.getMethod()).toEqual('post');
     expect(fakeFetch.getBody()).toEqual('{"test":1}');
